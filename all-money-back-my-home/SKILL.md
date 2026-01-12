@@ -1,5 +1,5 @@
 ---
-name: investment-report-analyzer
+name: all-money-back-my-home
 description: 分析投研PDF报告，提取股票信息并生成结构化投资策略表格
 ---
 
