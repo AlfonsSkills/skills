@@ -1,11 +1,11 @@
 ---
 name: all-money-back-my-home
-description: 分析投研PDF报告，提取股票信息并生成结构化投资策略表格
+description: 分析投研报告（支持 PDF/图片/Word 等多种格式），提取股票信息并生成结构化投资策略表格
 ---
 
 ## 目标
 
-将任意投研机构的PDF报告进行自动化分析，完成以下任务：
+将任意投研机构的报告进行自动化分析，完成以下任务：
 1. 提取报告中提及的所有股票名称
 2. 识别每只股票的所属板块（根据上下文判断）
 3. 根据报告措辞判断推荐等级
@@ -13,15 +13,33 @@ description: 分析投研PDF报告，提取股票信息并生成结构化投资�
 5. 根据AI知识库补充对应的股票代码
 6. 生成结构化的Markdown表格输出
 
+## 支持格式
+
+| 格式 | 扩展名 | 提取方式 |
+|------|--------|----------|
+| PDF | `.pdf` | pdftotext / PyPDF2 |
+| Word | `.docx/.doc` | pandoc / python-docx |
+| 图片 | `.png/.jpg/.webp` | **Agent 视觉能力直接分析** |
+| 纯文本 | `.txt/.md` | 直接读取 |
+| HTML | `.html/.htm` | pandoc / w3m |
+
 ## 工作流
 
-### Step 1: PDF内容提取
+### Step 1: 内容提取（多格式支持）
+
+**文本格式** (PDF/DOCX/TXT/HTML):
 ```bash
-# 使用脚本提取PDF文本
-./scripts/extract_pdf.sh <pdf_path>
+# 使用统一提取脚本
+./scripts/extract_content.sh <file_path>
 ```
-- 优先使用 `pdftotext`
-- 备选使用 `PyPDF2`
+
+**图片格式** (PNG/JPG/WEBP):
+```
+# 直接将图片路径提供给 Agent，利用视觉能力分析
+请分析 /path/to/report.png 中的股票
+```
+
+> 图片格式无需文本提取步骤，Agent 可直接「看到」图片内容并分析。
 
 ### Step 2: 股票信息识别
 从文本中逐一识别：
